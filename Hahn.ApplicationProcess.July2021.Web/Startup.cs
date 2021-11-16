@@ -1,3 +1,4 @@
+using Hahn.ApplicatonProcess.July2021.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +33,8 @@ namespace Hahn.ApplicationProcess.July2021.Web
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hahn.ApplicationProcess.July2021.Web", Version = "v1" });
             });
+
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +46,19 @@ namespace Hahn.ApplicationProcess.July2021.Web
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hahn.ApplicationProcess.July2021.Web v1"));
             }
+
+            //services.AddDbContext<HahnDbContext>(options =>
+            //{
+            //    string connectionString = string.Empty;
+
+            //    if (services.IsDevelopment())
+            //        connectionString = Configuration.GetConnectionString("dbConnectionString");
+            //    else
+            //        connectionString = Environment.GetEnvironmentVariable("dbConnectionString");
+
+            //    options.UseSqlServer(connectionString);
+            //    //options.EnableSensitiveDataLogging(_currentEnvironment.IsDevelopment());
+            //});
 
             app.UseHttpsRedirection();
 
