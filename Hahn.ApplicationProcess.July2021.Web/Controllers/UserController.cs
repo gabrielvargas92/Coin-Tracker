@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Hahn.ApplicationProcess.July2021.Web.Controllers
@@ -24,9 +25,14 @@ namespace Hahn.ApplicationProcess.July2021.Web.Controllers
         }
 
         [HttpPost]
-        public void Post()
+        [Route("")]
+        public async Task<IActionResult> Post([FromBody] CreateUserCommandRequest request)
         {
-            mediator.Send(new CreateUserCommandRequest());
+            await mediator.Send(request);
+
+            var x = HttpContext.Response.Headers;
+            //todo => change for 201 response
+            return Ok();
         }
     }
 }

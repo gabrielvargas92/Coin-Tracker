@@ -1,4 +1,6 @@
 using Hahn.ApplicatonProcess.July2021.Data;
+using Hahn.ApplicatonProcess.July2021.Domain.Contracts.Repository;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +37,9 @@ namespace Hahn.ApplicationProcess.July2021.Web
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hahn.ApplicationProcess.July2021.Web", Version = "v1" });
             });
+
+           
+            services.AddMediatR(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +62,20 @@ namespace Hahn.ApplicationProcess.July2021.Web
                     connectionString = Environment.GetEnvironmentVariable("dbConnectionString");
 
                 options.UseSqlServer(connectionString);
+            });
+
+            Services.AddScoped<IUserRepository, UserRepository>();
+
+            var container = new Container(cfg =>
+            {
+                cfg.Scan(scanner =>
+                {
+                    scanner.AssemblyContainingType<Ping>(); // Our assembly with requests & handlers
+                    scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>));
+                    scanner.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
+                });
+                cfg.For<ServiceFactory>().Use<ServiceFactory>(ctx => ctx.GetInstance);
+                cfg.For<IMediator>().Use<Mediator>();
             });
 
             app.UseHttpsRedirection();
