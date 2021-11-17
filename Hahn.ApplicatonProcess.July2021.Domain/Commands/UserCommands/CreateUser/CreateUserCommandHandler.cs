@@ -15,10 +15,10 @@ namespace Hahn.ApplicatonProcess.July2021.Domain.Commands.UserCommands.CreateUse
         private readonly IUserRepository userRepository;
         public CreateUserCommandHandler(IUserRepository UserRepository)
         {
-            UserRepository = userRepository;
+            userRepository = UserRepository;
         }
 
-        public Task<CreateUserCommandResponse> Handle(CreateUserCommandRequest request, CancellationToken cancellationToken)
+        public async Task<CreateUserCommandResponse> Handle(CreateUserCommandRequest request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
