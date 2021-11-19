@@ -1,7 +1,11 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Hahn.ApplicatonProcess.July2021.Data;
 using Hahn.ApplicatonProcess.July2021.Domain;
 using Hahn.ApplicatonProcess.July2021.Domain.Commands.UserCommands.CreateUser;
 using Hahn.ApplicatonProcess.July2021.Domain.Contracts.Repository;
+using Hahn.ApplicatonProcess.July2021.Domain.Dto.User;
+using Hahn.ApplicatonProcess.July2021.Domain.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +40,10 @@ namespace Hahn.ApplicationProcess.July2021.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services
+                .AddMvc(options => options.EnableEndpointRouting = false)
+                .AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<CreateUserValidator>());
+
             services.AddDbContext<HahnDbContext>(options =>
             {
                 string connectionString = string.Empty;
@@ -49,13 +57,11 @@ namespace Hahn.ApplicationProcess.July2021.Web
             });
 
             services.AddControllers();
-
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hahn.ApplicationProcess.July2021.Web", Version = "v1" });
             });
-
-
             
             services.AddScoped<IUserRepository, UserRepository>();
             services.RegisterRequestHandlers();
@@ -70,7 +76,7 @@ namespace Hahn.ApplicationProcess.July2021.Web
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hahn.ApplicationProcess.July2021.Web v1"));
             }
-
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();
