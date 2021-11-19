@@ -1,14 +1,16 @@
 ﻿using Hahn.ApplicatonProcess.July2021.Domain.Dto.User;
 using MediatR;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hahn.ApplicatonProcess.July2021.Domain.Commands.UserCommands.CreateUser
 {
-    public class CreateUserCommand 
+    public class CreateUserCommand : IRequest<CreateUserCommandResponse>
     {
+        public int Age { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public AddressCommandRequest Address { get; set; }
+        public ICollection<AssetCommandRequest> Assets { get; set; }
     }
 }

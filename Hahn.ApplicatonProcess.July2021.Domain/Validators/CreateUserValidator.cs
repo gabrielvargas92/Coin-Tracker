@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
+using Hahn.ApplicatonProcess.July2021.Domain.Commands.UserCommands.CreateUser;
 using Hahn.ApplicatonProcess.July2021.Domain.Dto.User;
 
 namespace Hahn.ApplicatonProcess.July2021.Domain.Validators
 {
-    public class CreateUserValidator : AbstractValidator<CreateUserCommandRequest>
+    public class CreateUserValidator : AbstractValidator<CreateUserCommand>
     {
         public CreateUserValidator()
         {

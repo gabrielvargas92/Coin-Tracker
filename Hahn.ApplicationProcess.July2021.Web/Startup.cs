@@ -21,11 +21,8 @@ namespace Hahn.ApplicationProcess.July2021.Web
 {
     public class Startup
     {
-        private readonly IHostEnvironment _currentEnvironment;
-
-        public Startup(IHostEnvironment env, IConfiguration configuration)
+        public Startup(IHostEnvironment env)
         {
-            _currentEnvironment = env;
             var builder = new ConfigurationBuilder()
            .SetBasePath(env.ContentRootPath)
            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -46,14 +43,15 @@ namespace Hahn.ApplicationProcess.July2021.Web
 
             services.AddDbContext<HahnDbContext>(options =>
             {
-                string connectionString = string.Empty;
+                options.UseInMemoryDatabase(databaseName: "hahn_dev");
+                //string connectionString = string.Empty;
 
-                if (_currentEnvironment.IsDevelopment())
-                    connectionString = Configuration.GetConnectionString("dbConnectionString");
-                else
-                    connectionString = Environment.GetEnvironmentVariable("dbConnectionString");
+                //if (_currentEnvironment.IsDevelopment())
+                //    connectionString = Configuration.GetConnectionString("dbConnectionString");
+                //else
+                //    connectionString = Environment.GetEnvironmentVariable("dbConnectionString");
 
-                options.UseSqlServer(connectionString);
+                //options.UseSqlServer(connectionString);
             });
 
             services.AddControllers();
@@ -64,6 +62,7 @@ namespace Hahn.ApplicationProcess.July2021.Web
             });
             
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAssetRepository, AssetRepository>();
             services.RegisterRequestHandlers();
         }
 

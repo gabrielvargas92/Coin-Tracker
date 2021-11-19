@@ -167,6 +167,8 @@ namespace Hahn.ApplicatonProcess.July2021.Data
         {
             var query = DbSet.AsQueryable();
 
+            IncludeProperties(ref query, properties);
+
             return query.FirstOrDefaultAsync(x => x.Id.ToString() == id.ToString());
         }
 
@@ -206,17 +208,5 @@ namespace Hahn.ApplicatonProcess.July2021.Data
         {
             Context.ChangeTracker.Clear();
         }
-
-        Task<TObject> IBaseRepository<TObject, TKey>.GetByIdAsync(TKey id, params Expression<Func<TObject, object>>[] properties)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<int> IBaseRepository<TObject, TKey>.SaveChangesAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-
     }
 }

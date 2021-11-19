@@ -1,25 +1,20 @@
-﻿using Hahn.ApplicatonProcess.July2021.Domain.Commands.UserCommands.CreateUser;
-using Hahn.ApplicatonProcess.July2021.Domain.Entities;
-using Hahn.ApplicatonProcess.July2021.Domain.Queries.UserQueries.GetUser;
+﻿using Hahn.ApplicatonProcess.July2021.Domain.Commands.CreateAssetCommands;
+using Hahn.ApplicatonProcess.July2021.Domain.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace Hahn.ApplicationProcess.July2021.Web.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : ControllerBase
+    public class AssetController : ControllerBase
     {
-        private readonly ILogger<UserController> _logger;
+        private readonly ILogger<AssetController> _logger;
         private readonly IMediator mediator;
 
-        public UserController(ILogger<UserController> logger, IMediator mediator)
+        public AssetController(ILogger<AssetController> logger, IMediator mediator)
         {
             _logger = logger;
             this.mediator = mediator;
@@ -27,7 +22,7 @@ namespace Hahn.ApplicationProcess.July2021.Web.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> Post([FromBody] CreateUserCommand request)
+        public async Task<IActionResult> Post([FromBody] CreateAssetCommand request)
         {
             await mediator.Send(request);
 
@@ -40,7 +35,7 @@ namespace Hahn.ApplicationProcess.July2021.Web.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            await mediator.Send(new GetUserQuery { Id = id });
+            await mediator.Send(new GetAssetQuery { Id = id });
 
             var x = HttpContext.Response.Headers;
             //todo => change for 201 response
